@@ -55,8 +55,8 @@ class MancalaGame:
     return end_index
   
   def show(self):
-    print('{:2d}               {:2d}'.format(self.board.get_opponent_store(), self.board.get_player_store()))
-    print('{}'.format(np.stack((np.flipud(self.board.pit[game.board.opponent_min_index:game.board.opponent_max_index+1]), self.board.pit[0:game.board.player_max_index+1]))))
+    print '{:2d}               {:2d}'.format(self.board.get_opponent_store(), self.board.get_player_store())
+    print '{}'.format(np.stack((np.flipud(self.board.pit[game.board.opponent_min_index:game.board.opponent_max_index+1]), self.board.pit[0:game.board.player_max_index+1])))
     #print'{}'.format(self.board.pit)
  
   def in_play(self):
@@ -79,7 +79,7 @@ class MancalaGame:
     return nz[0]
   
 if __name__ == '__main__':
-    for x in range(1000):
+    for x in xrange(1000):
       game = MancalaGame()
       player_move=True
       moves = 0
@@ -92,7 +92,7 @@ if __name__ == '__main__':
           if (game.move(pla_move_i) != game.board.player_store_index):
             player_move=False
           """
-          i = input("Your move: ")
+          i = raw_input("Your move: ")
           try:
             i = int(i)
           except ValueError:
@@ -102,17 +102,14 @@ if __name__ == '__main__':
             #print(isinstance(i, (int))
             i-=1
             if (0<=i<=game.board.player_max_index):
-              if (game.board.pit[i] != 0):
-                if (game.move(i) != game.board.player_store_index): #Check, if move ended in store
-                  player_move=False
-              else:
-                print("Empty pit!")
+              if (game.move(i) != game.board.player_store_index):
+                player_move=False
             else:
               print("Wrong index!")
               continue
         else:
           opp_move_i = game.opponent_nonzero_move()
-          print("Opponents move: {}".format(opp_move_i))
+          print ("Opponents move: {}").format(opp_move_i)
           if (game.move(opp_move_i) != game.board.opponent_store_index):
             player_move=True
           """i = raw_input("Opponents move: ")
@@ -129,5 +126,5 @@ if __name__ == '__main__':
               print("Wrong index!")
               continue"""
       game.show()
-      print("Score: {}".format(game.end_score()))
-      print("Moves: {}".format(moves))
+      print "Score: {}".format(game.end_score())
+      print "Moves: {}".format(moves)
