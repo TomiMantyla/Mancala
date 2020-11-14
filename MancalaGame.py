@@ -77,57 +77,84 @@ class MancalaGame:
     nz=nz[nz<self.board.opponent_store_index]
     np.random.shuffle(nz)
     return nz[0]
-  
-if __name__ == '__main__':
-    for x in range(1000):
-      game = MancalaGame()
-      player_move=True
-      moves = 0
-      while(game.in_play()):
-        game.show()
-        moves+=1
-        if (player_move):
-          """pla_move_i = game.player_nonzero_move()
-          #print ("Players move: {}").format(pla_move_i)
-          if (game.move(pla_move_i) != game.board.player_store_index):
-            player_move=False
-          """
-          i = input("Your move: ")
-          try:
-            i = int(i)
-          except ValueError:
-            print("Not an integer!")
-            continue
+
+def single_player_game(game):
+  #game = MancalaGame()
+  player_move=True
+  moves = 0
+  while(game.in_play()):
+    game.show()
+    moves+=1
+    if (player_move):
+      """pla_move_i = game.player_nonzero_move()
+      #print ("Players move: {}").format(pla_move_i)
+      if (game.move(pla_move_i) != game.board.player_store_index):
+        player_move=False
+      """
+      i = input("Your move: ")
+      try:
+        i = int(i)
+      except ValueError:
+        print("Not an integer!")
+        continue
+      else:
+        #print(isinstance(i, (int))
+        i-=1
+        if (0<=i<=game.board.player_max_index):
+          if (game.board.pit[i] != 0):
+            if (game.move(i) != game.board.player_store_index): #Check, if move ended in store
+              player_move=False
           else:
-            #print(isinstance(i, (int))
-            i-=1
-            if (0<=i<=game.board.player_max_index):
-              if (game.board.pit[i] != 0):
-                if (game.move(i) != game.board.player_store_index): #Check, if move ended in store
-                  player_move=False
-              else:
-                print("Empty pit!")
-            else:
-              print("Wrong index!")
-              continue
+            print("Empty pit!")
         else:
-          opp_move_i = game.opponent_nonzero_move()
-          print("Opponents move: {}".format(opp_move_i))
-          if (game.move(opp_move_i) != game.board.opponent_store_index):
+          print("Wrong index!")
+          continue
+    else:
+      opp_move_i = game.opponent_nonzero_move()
+      print("Opponents move: {}".format(opp_move_i))
+      if (game.move(opp_move_i) != game.board.opponent_store_index):
+        player_move=True
+      """i = raw_input("Opponents move: ")
+      try:
+        i = int(i)
+      except ValueError:
+        print("Not an integer!")
+        continue
+      else:
+        if (game.board.opponent_min_index<=i<=game.board.opponent_max_index):
+          if (game.move(i) != game.board.opponent_store_index):
             player_move=True
-          """i = raw_input("Opponents move: ")
-          try:
-            i = int(i)
-          except ValueError:
-            print("Not an integer!")
-            continue
-          else:
-            if (game.board.opponent_min_index<=i<=game.board.opponent_max_index):
-              if (game.move(i) != game.board.opponent_store_index):
-                player_move=True
-            else:
-              print("Wrong index!")
-              continue"""
-      game.show()
-      print("Score: {}".format(game.end_score()))
-      print("Moves: {}".format(moves))
+        else:
+          print("Wrong index!")
+          continue"""
+  game.show()
+  print("Score: {}".format(game.end_score()))
+  print("Moves: {}".format(moves))
+
+def zero_player_game(game):
+  #game = MancalaGame()
+  player_move=True
+  moves = 0
+  while(game.in_play()):
+    #game.show()
+    moves+=1
+    if (player_move):
+      player_move_i = game.player_nonzero_move()
+      #print("Players move: {}".format(player_move_i))
+      if (game.move(player_move_i) != game.board.player_store_index):
+        player_move=False
+    else:
+      opp_move_i = game.opponent_nonzero_move()
+      #print("Opponents move: {}".format(opp_move_i))
+      if (game.move(opp_move_i) != game.board.opponent_store_index):
+        player_move=True
+  #game.show()
+  print("Score: {}".format(game.end_score()))
+  print("Moves: {}".format(moves))
+
+
+if __name__ == '__main__':
+  for x in range(10):
+    game = MancalaGame()
+    print("Game {}".format(x))
+    zero_player_game(game)
