@@ -1,3 +1,4 @@
+#Author: Tomi Mantyla
 import sys  
 import numpy as np
 from MancalaBoard import MancalaBoard
@@ -7,7 +8,6 @@ class MancalaGame:
   def __init__(self, size=6 , beans=4) :
     self.board = MancalaBoard(size)
     self.board.set_beans(beans)
-    self.moves = []
     
   def move(self, pit):
     cp = np.copy(self.board.pit)
@@ -78,6 +78,24 @@ class MancalaGame:
     np.random.shuffle(nz)
     return nz[0]
 
+  def zero_player_game(self, player_start=True, random_seed=None):
+    np.random.seed(random_seed)
+    player_move = player_start
+    moves = 0
+    while(self.in_play()):
+      moves+=1
+      if (player_move):
+        player_move_i = self.player_nonzero_move()
+        if (self.move(player_move_i) != self.board.player_store_index):
+          player_move=False
+      else:
+        print(self.board.get_state(), end="")
+        store_before = self.board.get_opponent_store()
+        opp_move_i = self.opponent_nonzero_move()
+        if (self.move(opp_move_i) != self.board.opponent_store_index):
+          player_move=True
+        print(self.board.get_opponent_store()-store_before)
+
 def single_player_game(game):
   #game = MancalaGame()
   player_move=True
@@ -131,30 +149,11 @@ def single_player_game(game):
   print("Score: {}".format(game.end_score()))
   print("Moves: {}".format(moves))
 
-def zero_player_game(game):
-  #game = MancalaGame()
-  player_move=True
-  moves = 0
-  while(game.in_play()):
-    #game.show()
-    moves+=1
-    if (player_move):
-      player_move_i = game.player_nonzero_move()
-      #print("Players move: {}".format(player_move_i))
-      if (game.move(player_move_i) != game.board.player_store_index):
-        player_move=False
-    else:
-      opp_move_i = game.opponent_nonzero_move()
-      #print("Opponents move: {}".format(opp_move_i))
-      if (game.move(opp_move_i) != game.board.opponent_store_index):
-        player_move=True
-  #game.show()
-  print("Score: {}".format(game.end_score()))
-  print("Moves: {}".format(moves))
-
 
 if __name__ == '__main__':
-  for x in range(10):
+  for x in range(1):
     game = MancalaGame()
     print("Game {}".format(x))
-    zero_player_game(game)
+    game.zero_player_game(True)#x % 2 == 0)
+    print(game.end_score()[0]<game.end_score()[1])
+    #print(game.board.get_state())
